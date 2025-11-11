@@ -4,6 +4,9 @@ import { z } from 'zod'
 const envSchema = z.object({
   CONVEX_DEPLOYMENT: z.string(),
   NODE_ENV: z.enum(['development', 'production', 'test']),
+  SITE_URL: z.string(),
+  AUTH_RESEND_KEY: z.string(),
+  OPENAI_API_KEY: z.string(),
 })
 
 const clientEnvSchema = z.object({
