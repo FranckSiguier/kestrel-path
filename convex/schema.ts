@@ -26,10 +26,10 @@ export const tables = {
     userAgent: v.optional(v.union(v.null(), v.string())),
     userId: v.string(),
   })
-    .index('expiresAt', ['expiresAt'])
-    .index('expiresAt_userId', ['expiresAt', 'userId'])
-    .index('token', ['token'])
-    .index('userId', ['userId']),
+    .index('by_expiresAt', ['expiresAt'])
+    .index('by_expiresAt_userId', ['expiresAt', 'userId'])
+    .index('by_token', ['token'])
+    .index('by_userId', ['userId']),
   account: defineTable({
     accountId: v.string(),
     providerId: v.string(),
@@ -44,10 +44,10 @@ export const tables = {
     createdAt: v.number(),
     updatedAt: v.number(),
   })
-    .index('accountId', ['accountId'])
-    .index('accountId_providerId', ['accountId', 'providerId'])
-    .index('providerId_userId', ['providerId', 'userId'])
-    .index('userId', ['userId']),
+    .index('by_accountId', ['accountId'])
+    .index('by_accountId_providerId', ['accountId', 'providerId'])
+    .index('by_providerId_userId', ['providerId', 'userId'])
+    .index('by_userId', ['userId']),
   verification: defineTable({
     identifier: v.string(),
     value: v.string(),
@@ -55,13 +55,13 @@ export const tables = {
     createdAt: v.number(),
     updatedAt: v.number(),
   })
-    .index('expiresAt', ['expiresAt'])
-    .index('identifier', ['identifier']),
+    .index('by_expiresAt', ['expiresAt'])
+    .index('by_identifier', ['identifier']),
   twoFactor: defineTable({
     secret: v.string(),
     backupCodes: v.string(),
     userId: v.string(),
-  }).index('userId', ['userId']),
+  }).index('by_userId', ['userId']),
   jwks: defineTable({
     publicKey: v.string(),
     privateKey: v.string(),
@@ -70,9 +70,13 @@ export const tables = {
 
   transcripts: defineTable({
     userId: v.string(),
+    orgId: v.string(),
     content: v.string(),
     createdAt: v.number(),
-  }).index('userId', ['userId']),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_orgId', ['orgId'])
+    .index('by_userId_orgId', ['userId', 'orgId']),
 
   orgs: defineTable({
     name: v.string(),

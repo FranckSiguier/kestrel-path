@@ -15,7 +15,7 @@ export const getTranscripts = query({
   handler: async (ctx, args) => {
     return await ctx.db
       .query('transcripts')
-      .withIndex('userId', (q) => q.eq('userId', args.userId))
+      .withIndex('by_userId', (q) => q.eq('userId', args.userId))
       .collect()
   },
 })

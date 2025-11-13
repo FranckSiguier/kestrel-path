@@ -18,6 +18,8 @@ import {
   getCookieName,
 } from '@convex-dev/better-auth/react-start'
 import { authClient } from '~/lib/auth-client'
+import { ThemeProvider } from '~/components/theme-provider'
+
 // Get auth information for SSR using available cookies
 const fetchAuth = createServerFn({ method: 'GET' }).handler(async () => {
   const { createAuth } = await import('../../convex/auth')
@@ -107,7 +109,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
         <Scripts />
       </body>
     </html>
