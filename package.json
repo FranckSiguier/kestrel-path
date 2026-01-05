@@ -4,14 +4,14 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "npx convex dev --once && concurrently -r npm:dev:web npm:dev:convex",
+    "dev": "pnpm dlx convex dev --once && concurrently -r npm:dev:web npm:dev:convex",
     "dev:web": "vite dev",
     "dev:ts": "tsc -b -w",
-    "dev:convex": "npx convex dev",
+    "dev:convex": "pnpm dlx convex dev",
     "build": "vite build && tsc --noEmit",
     "start": "node .output/server/index.mjs",
-    "auth:generate": "npx better-auth generate",
     "format": "prettier --write .",
+    "auth:generate": "pnpm dlx @better-auth/cli generate --output convex/betterAuth/schema.ts -y --config convex/betterAuth/auth.ts",
     "lint": "tsc && eslint .  --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {

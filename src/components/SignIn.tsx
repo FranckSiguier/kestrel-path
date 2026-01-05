@@ -32,13 +32,9 @@ export const SignIn = () => {
         onRequest: () => {
           setOtpLoading(true)
         },
-        onSuccess: async (ctx) => {
+        onSuccess: async () => {
           setOtpLoading(false)
-          if (ctx.data.twoFactorRedirect) {
-            //await navigate({ to: '/verify-2fa' })
-          } else {
-            await navigate({ to: '/dashboard' })
-          }
+          await navigate({ to: '/dashboard' })
         },
         onError: (ctx) => {
           setOtpLoading(false)

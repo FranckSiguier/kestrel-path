@@ -6,13 +6,7 @@ import {
 import { convex } from '@convex-dev/better-auth/plugins'
 import { requireActionCtx } from '@convex-dev/better-auth/utils'
 import { betterAuth } from 'better-auth'
-import {
-  admin,
-  anonymous,
-  emailOTP,
-  twoFactor,
-  organization,
-} from 'better-auth/plugins'
+import { admin, emailOTP, organization } from 'better-auth/plugins'
 import { components, internal } from './_generated/api'
 import { type DataModel } from './_generated/dataModel'
 import { query } from './_generated/server'
@@ -122,10 +116,8 @@ export const createAuth = (
           })
         },
       }),
-      twoFactor(),
-      organization(),
-      anonymous(),
       admin(),
+      organization(),
       convex(),
     ],
   })

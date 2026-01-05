@@ -16,7 +16,6 @@ import type * as emails_resetPassword from "../emails/resetPassword.js";
 import type * as emails_verifyEmail from "../emails/verifyEmail.js";
 import type * as emails_verifyOTP from "../emails/verifyOTP.js";
 import type * as http from "../http.js";
-import type * as migrations from "../migrations.js";
 import type * as users from "../users.js";
 
 import type {
@@ -34,7 +33,6 @@ declare const fullApi: ApiFromModules<{
   "emails/verifyEmail": typeof emails_verifyEmail;
   "emails/verifyOTP": typeof emails_verifyOTP;
   http: typeof http;
-  migrations: typeof migrations;
   users: typeof users;
 }>;
 
@@ -80,12 +78,9 @@ export declare const components: {
                   createdAt: number;
                   email: string;
                   emailVerified: boolean;
-                  foo?: null | string;
                   image?: null | string;
-                  isAnonymous?: null | boolean;
                   name: string;
                   role?: null | string;
-                  twoFactorEnabled?: null | boolean;
                   updatedAt: number;
                   userId?: null | string;
                 };
@@ -131,10 +126,6 @@ export declare const components: {
                   value: string;
                 };
                 model: "verification";
-              }
-            | {
-                data: { backupCodes: string; secret: string; userId: string };
-                model: "twoFactor";
               }
             | {
                 data: {
@@ -195,14 +186,11 @@ export declare const components: {
                     | "image"
                     | "createdAt"
                     | "updatedAt"
-                    | "twoFactorEnabled"
-                    | "isAnonymous"
                     | "role"
                     | "banned"
                     | "banReason"
                     | "banExpires"
                     | "userId"
-                    | "foo"
                     | "_id";
                   operator?:
                     | "lt"
@@ -237,8 +225,8 @@ export declare const components: {
                     | "ipAddress"
                     | "userAgent"
                     | "userId"
-                    | "activeOrganizationId"
                     | "impersonatedBy"
+                    | "activeOrganizationId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -311,32 +299,6 @@ export declare const components: {
                     | "createdAt"
                     | "updatedAt"
                     | "_id";
-                  operator?:
-                    | "lt"
-                    | "lte"
-                    | "gt"
-                    | "gte"
-                    | "eq"
-                    | "in"
-                    | "not_in"
-                    | "ne"
-                    | "contains"
-                    | "starts_with"
-                    | "ends_with";
-                  value:
-                    | string
-                    | number
-                    | boolean
-                    | Array<string>
-                    | Array<number>
-                    | null;
-                }>;
-              }
-            | {
-                model: "twoFactor";
-                where?: Array<{
-                  connector?: "AND" | "OR";
-                  field: "secret" | "backupCodes" | "userId" | "_id";
                   operator?:
                     | "lt"
                     | "lte"
@@ -508,14 +470,11 @@ export declare const components: {
                     | "image"
                     | "createdAt"
                     | "updatedAt"
-                    | "twoFactorEnabled"
-                    | "isAnonymous"
                     | "role"
                     | "banned"
                     | "banReason"
                     | "banExpires"
                     | "userId"
-                    | "foo"
                     | "_id";
                   operator?:
                     | "lt"
@@ -550,8 +509,8 @@ export declare const components: {
                     | "ipAddress"
                     | "userAgent"
                     | "userId"
-                    | "activeOrganizationId"
                     | "impersonatedBy"
+                    | "activeOrganizationId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -624,32 +583,6 @@ export declare const components: {
                     | "createdAt"
                     | "updatedAt"
                     | "_id";
-                  operator?:
-                    | "lt"
-                    | "lte"
-                    | "gt"
-                    | "gte"
-                    | "eq"
-                    | "in"
-                    | "not_in"
-                    | "ne"
-                    | "contains"
-                    | "starts_with"
-                    | "ends_with";
-                  value:
-                    | string
-                    | number
-                    | boolean
-                    | Array<string>
-                    | Array<number>
-                    | null;
-                }>;
-              }
-            | {
-                model: "twoFactor";
-                where?: Array<{
-                  connector?: "AND" | "OR";
-                  field: "secret" | "backupCodes" | "userId" | "_id";
                   operator?:
                     | "lt"
                     | "lte"
@@ -807,7 +740,6 @@ export declare const components: {
             | "session"
             | "account"
             | "verification"
-            | "twoFactor"
             | "organization"
             | "member"
             | "invitation"
@@ -857,7 +789,6 @@ export declare const components: {
             | "session"
             | "account"
             | "verification"
-            | "twoFactor"
             | "organization"
             | "member"
             | "invitation"
@@ -903,12 +834,9 @@ export declare const components: {
                   createdAt?: number;
                   email?: string;
                   emailVerified?: boolean;
-                  foo?: null | string;
                   image?: null | string;
-                  isAnonymous?: null | boolean;
                   name?: string;
                   role?: null | string;
-                  twoFactorEnabled?: null | boolean;
                   updatedAt?: number;
                   userId?: null | string;
                 };
@@ -921,14 +849,11 @@ export declare const components: {
                     | "image"
                     | "createdAt"
                     | "updatedAt"
-                    | "twoFactorEnabled"
-                    | "isAnonymous"
                     | "role"
                     | "banned"
                     | "banReason"
                     | "banExpires"
                     | "userId"
-                    | "foo"
                     | "_id";
                   operator?:
                     | "lt"
@@ -974,8 +899,8 @@ export declare const components: {
                     | "ipAddress"
                     | "userAgent"
                     | "userId"
-                    | "activeOrganizationId"
                     | "impersonatedBy"
+                    | "activeOrganizationId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -1069,37 +994,6 @@ export declare const components: {
                     | "createdAt"
                     | "updatedAt"
                     | "_id";
-                  operator?:
-                    | "lt"
-                    | "lte"
-                    | "gt"
-                    | "gte"
-                    | "eq"
-                    | "in"
-                    | "not_in"
-                    | "ne"
-                    | "contains"
-                    | "starts_with"
-                    | "ends_with";
-                  value:
-                    | string
-                    | number
-                    | boolean
-                    | Array<string>
-                    | Array<number>
-                    | null;
-                }>;
-              }
-            | {
-                model: "twoFactor";
-                update: {
-                  backupCodes?: string;
-                  secret?: string;
-                  userId?: string;
-                };
-                where?: Array<{
-                  connector?: "AND" | "OR";
-                  field: "secret" | "backupCodes" | "userId" | "_id";
                   operator?:
                     | "lt"
                     | "lte"
@@ -1295,12 +1189,9 @@ export declare const components: {
                   createdAt?: number;
                   email?: string;
                   emailVerified?: boolean;
-                  foo?: null | string;
                   image?: null | string;
-                  isAnonymous?: null | boolean;
                   name?: string;
                   role?: null | string;
-                  twoFactorEnabled?: null | boolean;
                   updatedAt?: number;
                   userId?: null | string;
                 };
@@ -1313,14 +1204,11 @@ export declare const components: {
                     | "image"
                     | "createdAt"
                     | "updatedAt"
-                    | "twoFactorEnabled"
-                    | "isAnonymous"
                     | "role"
                     | "banned"
                     | "banReason"
                     | "banExpires"
                     | "userId"
-                    | "foo"
                     | "_id";
                   operator?:
                     | "lt"
@@ -1366,8 +1254,8 @@ export declare const components: {
                     | "ipAddress"
                     | "userAgent"
                     | "userId"
-                    | "activeOrganizationId"
                     | "impersonatedBy"
+                    | "activeOrganizationId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -1461,37 +1349,6 @@ export declare const components: {
                     | "createdAt"
                     | "updatedAt"
                     | "_id";
-                  operator?:
-                    | "lt"
-                    | "lte"
-                    | "gt"
-                    | "gte"
-                    | "eq"
-                    | "in"
-                    | "not_in"
-                    | "ne"
-                    | "contains"
-                    | "starts_with"
-                    | "ends_with";
-                  value:
-                    | string
-                    | number
-                    | boolean
-                    | Array<string>
-                    | Array<number>
-                    | null;
-                }>;
-              }
-            | {
-                model: "twoFactor";
-                update: {
-                  backupCodes?: string;
-                  secret?: string;
-                  userId?: string;
-                };
-                where?: Array<{
-                  connector?: "AND" | "OR";
-                  field: "secret" | "backupCodes" | "userId" | "_id";
                   operator?:
                     | "lt"
                     | "lte"
@@ -1793,91 +1650,6 @@ export declare const components: {
             | "failed";
         },
         null
-      >;
-    };
-  };
-  migrations: {
-    lib: {
-      cancel: FunctionReference<
-        "mutation",
-        "internal",
-        { name: string },
-        {
-          batchSize?: number;
-          cursor?: string | null;
-          error?: string;
-          isDone: boolean;
-          latestEnd?: number;
-          latestStart: number;
-          name: string;
-          next?: Array<string>;
-          processed: number;
-          state: "inProgress" | "success" | "failed" | "canceled" | "unknown";
-        }
-      >;
-      cancelAll: FunctionReference<
-        "mutation",
-        "internal",
-        { sinceTs?: number },
-        Array<{
-          batchSize?: number;
-          cursor?: string | null;
-          error?: string;
-          isDone: boolean;
-          latestEnd?: number;
-          latestStart: number;
-          name: string;
-          next?: Array<string>;
-          processed: number;
-          state: "inProgress" | "success" | "failed" | "canceled" | "unknown";
-        }>
-      >;
-      clearAll: FunctionReference<
-        "mutation",
-        "internal",
-        { before?: number },
-        null
-      >;
-      getStatus: FunctionReference<
-        "query",
-        "internal",
-        { limit?: number; names?: Array<string> },
-        Array<{
-          batchSize?: number;
-          cursor?: string | null;
-          error?: string;
-          isDone: boolean;
-          latestEnd?: number;
-          latestStart: number;
-          name: string;
-          next?: Array<string>;
-          processed: number;
-          state: "inProgress" | "success" | "failed" | "canceled" | "unknown";
-        }>
-      >;
-      migrate: FunctionReference<
-        "mutation",
-        "internal",
-        {
-          batchSize?: number;
-          cursor?: string | null;
-          dryRun: boolean;
-          fnHandle: string;
-          name: string;
-          next?: Array<{ fnHandle: string; name: string }>;
-        },
-        {
-          batchSize?: number;
-          cursor?: string | null;
-          error?: string;
-          isDone: boolean;
-          latestEnd?: number;
-          latestStart: number;
-          name: string;
-          next?: Array<string>;
-          processed: number;
-          state: "inProgress" | "success" | "failed" | "canceled" | "unknown";
-        }
       >;
     };
   };

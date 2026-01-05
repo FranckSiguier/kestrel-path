@@ -37,12 +37,9 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                   createdAt: number;
                   email: string;
                   emailVerified: boolean;
-                  foo?: null | string;
                   image?: null | string;
-                  isAnonymous?: null | boolean;
                   name: string;
                   role?: null | string;
-                  twoFactorEnabled?: null | boolean;
                   updatedAt: number;
                   userId?: null | string;
                 };
@@ -88,10 +85,6 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                   value: string;
                 };
                 model: "verification";
-              }
-            | {
-                data: { backupCodes: string; secret: string; userId: string };
-                model: "twoFactor";
               }
             | {
                 data: {
@@ -153,14 +146,11 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "image"
                     | "createdAt"
                     | "updatedAt"
-                    | "twoFactorEnabled"
-                    | "isAnonymous"
                     | "role"
                     | "banned"
                     | "banReason"
                     | "banExpires"
                     | "userId"
-                    | "foo"
                     | "_id";
                   operator?:
                     | "lt"
@@ -195,8 +185,8 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "ipAddress"
                     | "userAgent"
                     | "userId"
-                    | "activeOrganizationId"
                     | "impersonatedBy"
+                    | "activeOrganizationId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -269,32 +259,6 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "createdAt"
                     | "updatedAt"
                     | "_id";
-                  operator?:
-                    | "lt"
-                    | "lte"
-                    | "gt"
-                    | "gte"
-                    | "eq"
-                    | "in"
-                    | "not_in"
-                    | "ne"
-                    | "contains"
-                    | "starts_with"
-                    | "ends_with";
-                  value:
-                    | string
-                    | number
-                    | boolean
-                    | Array<string>
-                    | Array<number>
-                    | null;
-                }>;
-              }
-            | {
-                model: "twoFactor";
-                where?: Array<{
-                  connector?: "AND" | "OR";
-                  field: "secret" | "backupCodes" | "userId" | "_id";
                   operator?:
                     | "lt"
                     | "lte"
@@ -467,14 +431,11 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "image"
                     | "createdAt"
                     | "updatedAt"
-                    | "twoFactorEnabled"
-                    | "isAnonymous"
                     | "role"
                     | "banned"
                     | "banReason"
                     | "banExpires"
                     | "userId"
-                    | "foo"
                     | "_id";
                   operator?:
                     | "lt"
@@ -509,8 +470,8 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "ipAddress"
                     | "userAgent"
                     | "userId"
-                    | "activeOrganizationId"
                     | "impersonatedBy"
+                    | "activeOrganizationId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -583,32 +544,6 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "createdAt"
                     | "updatedAt"
                     | "_id";
-                  operator?:
-                    | "lt"
-                    | "lte"
-                    | "gt"
-                    | "gte"
-                    | "eq"
-                    | "in"
-                    | "not_in"
-                    | "ne"
-                    | "contains"
-                    | "starts_with"
-                    | "ends_with";
-                  value:
-                    | string
-                    | number
-                    | boolean
-                    | Array<string>
-                    | Array<number>
-                    | null;
-                }>;
-              }
-            | {
-                model: "twoFactor";
-                where?: Array<{
-                  connector?: "AND" | "OR";
-                  field: "secret" | "backupCodes" | "userId" | "_id";
                   operator?:
                     | "lt"
                     | "lte"
@@ -767,7 +702,6 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
             | "session"
             | "account"
             | "verification"
-            | "twoFactor"
             | "organization"
             | "member"
             | "invitation"
@@ -818,7 +752,6 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
             | "session"
             | "account"
             | "verification"
-            | "twoFactor"
             | "organization"
             | "member"
             | "invitation"
@@ -865,12 +798,9 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                   createdAt?: number;
                   email?: string;
                   emailVerified?: boolean;
-                  foo?: null | string;
                   image?: null | string;
-                  isAnonymous?: null | boolean;
                   name?: string;
                   role?: null | string;
-                  twoFactorEnabled?: null | boolean;
                   updatedAt?: number;
                   userId?: null | string;
                 };
@@ -883,14 +813,11 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "image"
                     | "createdAt"
                     | "updatedAt"
-                    | "twoFactorEnabled"
-                    | "isAnonymous"
                     | "role"
                     | "banned"
                     | "banReason"
                     | "banExpires"
                     | "userId"
-                    | "foo"
                     | "_id";
                   operator?:
                     | "lt"
@@ -936,8 +863,8 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "ipAddress"
                     | "userAgent"
                     | "userId"
-                    | "activeOrganizationId"
                     | "impersonatedBy"
+                    | "activeOrganizationId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -1031,37 +958,6 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "createdAt"
                     | "updatedAt"
                     | "_id";
-                  operator?:
-                    | "lt"
-                    | "lte"
-                    | "gt"
-                    | "gte"
-                    | "eq"
-                    | "in"
-                    | "not_in"
-                    | "ne"
-                    | "contains"
-                    | "starts_with"
-                    | "ends_with";
-                  value:
-                    | string
-                    | number
-                    | boolean
-                    | Array<string>
-                    | Array<number>
-                    | null;
-                }>;
-              }
-            | {
-                model: "twoFactor";
-                update: {
-                  backupCodes?: string;
-                  secret?: string;
-                  userId?: string;
-                };
-                where?: Array<{
-                  connector?: "AND" | "OR";
-                  field: "secret" | "backupCodes" | "userId" | "_id";
                   operator?:
                     | "lt"
                     | "lte"
@@ -1258,12 +1154,9 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                   createdAt?: number;
                   email?: string;
                   emailVerified?: boolean;
-                  foo?: null | string;
                   image?: null | string;
-                  isAnonymous?: null | boolean;
                   name?: string;
                   role?: null | string;
-                  twoFactorEnabled?: null | boolean;
                   updatedAt?: number;
                   userId?: null | string;
                 };
@@ -1276,14 +1169,11 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "image"
                     | "createdAt"
                     | "updatedAt"
-                    | "twoFactorEnabled"
-                    | "isAnonymous"
                     | "role"
                     | "banned"
                     | "banReason"
                     | "banExpires"
                     | "userId"
-                    | "foo"
                     | "_id";
                   operator?:
                     | "lt"
@@ -1329,8 +1219,8 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "ipAddress"
                     | "userAgent"
                     | "userId"
-                    | "activeOrganizationId"
                     | "impersonatedBy"
+                    | "activeOrganizationId"
                     | "_id";
                   operator?:
                     | "lt"
@@ -1424,37 +1314,6 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
                     | "createdAt"
                     | "updatedAt"
                     | "_id";
-                  operator?:
-                    | "lt"
-                    | "lte"
-                    | "gt"
-                    | "gte"
-                    | "eq"
-                    | "in"
-                    | "not_in"
-                    | "ne"
-                    | "contains"
-                    | "starts_with"
-                    | "ends_with";
-                  value:
-                    | string
-                    | number
-                    | boolean
-                    | Array<string>
-                    | Array<number>
-                    | null;
-                }>;
-              }
-            | {
-                model: "twoFactor";
-                update: {
-                  backupCodes?: string;
-                  secret?: string;
-                  userId?: string;
-                };
-                where?: Array<{
-                  connector?: "AND" | "OR";
-                  field: "secret" | "backupCodes" | "userId" | "_id";
                   operator?:
                     | "lt"
                     | "lte"
