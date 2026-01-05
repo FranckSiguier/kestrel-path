@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react'
 import { Heading, Text } from '@react-email/components'
 import { BaseEmail, styles } from './components/BaseEmail'

@@ -6,7 +6,7 @@ import { render } from '@react-email/components'
 import React from 'react'
 import ResetPasswordEmail from './emails/resetPassword'
 import { components } from './_generated/api'
-import { ActionCtx } from './_generated/server'
+import { type ActionCtx } from './_generated/server'
 
 const resend: Resend = new Resend(components.resend, {
   testMode: false,

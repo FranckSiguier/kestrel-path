@@ -16,10 +16,6 @@ declare global {
     interface ProcessEnv {
       readonly CONVEX_DEPLOYMENT: string
       readonly NODE_ENV: 'development' | 'production' | 'test'
-      readonly SITE_URL: string
-      readonly CONVEX_DEPLOYMENT: string
-      readonly AUTH_RESEND_KEY: string
-      readonly OPENAI_API_KEY: string
     }
   }
 }
