@@ -1,24 +1,25 @@
+/// <reference types="vite/client" />
 import {
-  HeadContent,
   Outlet,
-  Scripts,
   createRootRouteWithContext,
   useRouteContext,
+  HeadContent,
+  Scripts,
 } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
-import type { QueryClient } from '@tanstack/react-query'
-import appCss from '~/styles/app.css?url'
-import { createServerFn } from '@tanstack/react-start'
-import { ConvexQueryClient } from '@convex-dev/react-query'
-import { ConvexReactClient } from 'convex/react'
-import { getCookie, getRequest } from '@tanstack/react-start/server'
+import appCss from '@/styles/app.css?url'
 import { ConvexBetterAuthProvider } from '@convex-dev/better-auth/react'
+import { authClient } from '~/lib/auth-client'
 import {
   fetchSession,
   getCookieName,
 } from '@convex-dev/better-auth/react-start'
-import { authClient } from '~/lib/auth-client'
-import { ThemeProvider } from '~/components/theme-provider'
+import { getCookie, getRequest } from '@tanstack/react-start/server'
+import { seo } from '~/utils/seo'
+import { ConvexQueryClient } from '@convex-dev/react-query'
+import { createServerFn } from '@tanstack/react-start'
 
 // Get auth information for SSR using available cookies
 const fetchAuth = createServerFn({ method: 'GET' }).handler(async () => {
@@ -34,7 +35,6 @@ const fetchAuth = createServerFn({ method: 'GET' }).handler(async () => {
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
-  convexClient: ConvexReactClient
   convexQueryClient: ConvexQueryClient
 }>()({
   head: () => ({
@@ -46,53 +46,38 @@ export const Route = createRootRouteWithContext<{
         name: 'viewport',
         content: 'width=device-width, initial-scale=1',
       },
-      {
-        title: 'TanStack Start Starter',
-      },
+      ...seo({
+        title: 'Kestel Path',
+        description: `Kestel Path`,
+      }),
     ],
     links: [
       { rel: 'stylesheet', href: appCss },
-      {
-        rel: 'apple-touch-icon',
-        sizes: '180x180',
-        href: '/apple-touch-icon.png',
-      },
-      {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '32x32',
-        href: '/favicon-32x32.png',
-      },
-      {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '16x16',
-        href: '/favicon-16x16.png',
-      },
-      { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
-      { rel: 'icon', href: '/favicon.ico' },
+      { rel: 'icon', href: '/favicon.png' },
     ],
   }),
-  notFoundComponent: () => <div>Route not found</div>,
-  component: RootComponent,
   beforeLoad: async (ctx) => {
-    // all queries, mutations and action made with TanStack Query will be
-    // authenticated by an identity token.
     const { userId, token } = await fetchAuth()
+
     // During SSR only (the only time serverHttpClient exists),
     // set the auth token to make HTTP queries with.
     if (token) {
       ctx.context.convexQueryClient.serverHttpClient?.setAuth(token)
     }
-    return { userId, token }
+
+    return {
+      userId,
+      token,
+    }
   },
+  component: RootComponent,
 })
 
 function RootComponent() {
   const context = useRouteContext({ from: Route.id })
   return (
     <ConvexBetterAuthProvider
-      client={context.convexClient}
+      client={context.convexQueryClient.convexClient}
       authClient={authClient}
     >
       <RootDocument>
@@ -104,12 +89,13 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="bg-neutral-950 text-neutral-50 dark">
+        {children}
+        <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>
     </html>
