@@ -47,6 +47,11 @@ export const SignIn = () => {
   }
 
   const handleResetPassword = async () => {
+    if (!email) {
+      alert('Please enter your email')
+      return
+    }
+
     setForgotLoading(true)
     try {
       await authClient.forgetPassword({
@@ -121,7 +126,7 @@ export const SignIn = () => {
                   type="button"
                   onClick={handleResetPassword}
                   className="cursor-pointer"
-                  disabled={forgotLoading || !email}
+                  disabled={forgotLoading}
                 >
                   {forgotLoading ? (
                     <IconLoader2 size={14} className="animate-spin mr-1" />
