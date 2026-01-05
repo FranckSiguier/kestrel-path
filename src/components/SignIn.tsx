@@ -196,20 +196,6 @@ export const SignIn = () => {
             </Button>
           </form>
         </CardContent>
-        <CardFooter>
-          <div className="flex justify-center w-full border-t py-4">
-            <p className="text-center text-xs text-neutral-500">
-              Powered by{' '}
-              <a
-                href="https://better-auth.com"
-                className="underline"
-                target="_blank"
-              >
-                <span className="dark:text-orange-200/90">better-auth.</span>
-              </a>
-            </p>
-          </div>
-        </CardFooter>
       </Card>
       <p className="text-center mt-4 text-xs text-neutral-600 dark:text-neutral-400">
         Don&apos;t have an account?{' '}
