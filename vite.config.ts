@@ -16,8 +16,8 @@ export default defineConfig({
       projects: ['./tsconfig.json'],
     }),
     tanstackStart(),
-    netlify(),
     viteReact(),
+    netlify(),
   ],
   resolve: {
     alias: {
