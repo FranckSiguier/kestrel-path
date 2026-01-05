@@ -1,0 +1,7 @@
+[build]
+  command = "npx convex deploy --cmd 'pnpm run build'"
+  publish = "dist/client"
+
+[functions]
+  directory = ".netlify/v1/functions"
+  node_bundler = "esbuild"
