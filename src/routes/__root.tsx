@@ -9,7 +9,7 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
-import appCss from '@/styles/app.css?url'
+import '@/styles/app.css'
 import { ConvexBetterAuthProvider } from '@convex-dev/better-auth/react'
 import { authClient } from '~/lib/auth-client'
 import {
@@ -51,10 +51,7 @@ export const Route = createRootRouteWithContext<{
         description: `Kestel Path`,
       }),
     ],
-    links: [
-      { rel: 'stylesheet', href: appCss },
-      { rel: 'icon', href: '/favicon.png' },
-    ],
+    links: [{ rel: 'icon', href: '/favicon.png' }],
   }),
   beforeLoad: async (ctx) => {
     const { userId, token } = await fetchAuth()
