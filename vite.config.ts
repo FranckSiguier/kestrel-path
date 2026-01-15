@@ -14,7 +14,6 @@ const config = defineConfig({
     },
   },
   plugins: [
-    //// NO CHANGE IN THE ORDER OF THE PLUGINS ////
     devtools(),
     tailwindcss(),
     viteTsConfigPaths({

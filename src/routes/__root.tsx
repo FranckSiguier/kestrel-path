@@ -36,6 +36,7 @@ export const Route = createRootRoute({
       }),
     ],
     links: [
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "manifest", href: "/site.webmanifest" },
       {
         rel: "icon",
