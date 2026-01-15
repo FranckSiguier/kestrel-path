@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { admin, organization } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { db } from "@/db";
 import { account, rateLimit, session, user, verification } from "@/db/schema";
@@ -45,5 +46,5 @@ export const auth = betterAuth({
   //     await sendEmailVerification(user.email, url);
   //   },
   // },
-  plugins: [tanstackStartCookies()],
+  plugins: [admin(), tanstackStartCookies(), organization()],
 });

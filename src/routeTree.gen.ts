@@ -12,12 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as ResetPasswordMessageRouteImport } from './routes/reset-password.message'
-import { Route as AdminEmailsIndexRouteImport } from './routes/admin/emails.index'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api.auth.$'
-import { Route as AdminEmailsEmailIdRouteImport } from './routes/admin/emails.$emailId'
+import { Route as AuthenticatedAdminOrganizationIndexRouteImport } from './routes/_authenticated/admin/organization.index'
+import { Route as AuthenticatedAdminEmailsIndexRouteImport } from './routes/_authenticated/admin/emails.index'
+import { Route as AuthenticatedAdminEmailsEmailIdRouteImport } from './routes/_authenticated/admin/emails.$emailId'
 
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
@@ -34,116 +36,133 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const ResetPasswordMessageRoute = ResetPasswordMessageRouteImport.update({
   id: '/message',
   path: '/message',
   getParentRoute: () => ResetPasswordRoute,
 } as any)
-const AdminEmailsIndexRoute = AdminEmailsIndexRouteImport.update({
-  id: '/admin/emails/',
-  path: '/admin/emails/',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminEmailsEmailIdRoute = AdminEmailsEmailIdRouteImport.update({
-  id: '/admin/emails/$emailId',
-  path: '/admin/emails/$emailId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedAdminOrganizationIndexRoute =
+  AuthenticatedAdminOrganizationIndexRouteImport.update({
+    id: '/admin/organization/',
+    path: '/admin/organization/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedAdminEmailsIndexRoute =
+  AuthenticatedAdminEmailsIndexRouteImport.update({
+    id: '/admin/emails/',
+    path: '/admin/emails/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedAdminEmailsEmailIdRoute =
+  AuthenticatedAdminEmailsEmailIdRouteImport.update({
+    id: '/admin/emails/$emailId',
+    path: '/admin/emails/$emailId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/reset-password': typeof ResetPasswordRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/reset-password/message': typeof ResetPasswordMessageRoute
-  '/admin': typeof AdminIndexRoute
-  '/admin/emails/$emailId': typeof AdminEmailsEmailIdRoute
+  '/': typeof AuthenticatedIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/admin/emails': typeof AdminEmailsIndexRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/emails/$emailId': typeof AuthenticatedAdminEmailsEmailIdRoute
+  '/admin/emails': typeof AuthenticatedAdminEmailsIndexRoute
+  '/admin/organization': typeof AuthenticatedAdminOrganizationIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/reset-password': typeof ResetPasswordRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/reset-password/message': typeof ResetPasswordMessageRoute
-  '/admin': typeof AdminIndexRoute
-  '/admin/emails/$emailId': typeof AdminEmailsEmailIdRoute
+  '/': typeof AuthenticatedIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/admin/emails': typeof AdminEmailsIndexRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/emails/$emailId': typeof AuthenticatedAdminEmailsEmailIdRoute
+  '/admin/emails': typeof AuthenticatedAdminEmailsIndexRoute
+  '/admin/organization': typeof AuthenticatedAdminOrganizationIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/reset-password': typeof ResetPasswordRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/reset-password/message': typeof ResetPasswordMessageRoute
-  '/admin/': typeof AdminIndexRoute
-  '/admin/emails/$emailId': typeof AdminEmailsEmailIdRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/admin/emails/': typeof AdminEmailsIndexRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/admin/emails/$emailId': typeof AuthenticatedAdminEmailsEmailIdRoute
+  '/_authenticated/admin/emails/': typeof AuthenticatedAdminEmailsIndexRoute
+  '/_authenticated/admin/organization/': typeof AuthenticatedAdminOrganizationIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/reset-password/message'
+    | '/'
+    | '/api/auth/$'
     | '/admin'
     | '/admin/emails/$emailId'
-    | '/api/auth/$'
     | '/admin/emails'
+    | '/admin/organization'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/reset-password/message'
+    | '/'
+    | '/api/auth/$'
     | '/admin'
     | '/admin/emails/$emailId'
-    | '/api/auth/$'
     | '/admin/emails'
+    | '/admin/organization'
   id:
     | '__root__'
-    | '/'
+    | '/_authenticated'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/reset-password/message'
-    | '/admin/'
-    | '/admin/emails/$emailId'
+    | '/_authenticated/'
     | '/api/auth/$'
-    | '/admin/emails/'
+    | '/_authenticated/admin/'
+    | '/_authenticated/admin/emails/$emailId'
+    | '/_authenticated/admin/emails/'
+    | '/_authenticated/admin/organization/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRouteWithChildren
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
-  AdminIndexRoute: typeof AdminIndexRoute
-  AdminEmailsEmailIdRoute: typeof AdminEmailsEmailIdRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  AdminEmailsIndexRoute: typeof AdminEmailsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -169,19 +188,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/reset-password/message': {
       id: '/reset-password/message'
@@ -190,12 +209,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordMessageRouteImport
       parentRoute: typeof ResetPasswordRoute
     }
-    '/admin/emails/': {
-      id: '/admin/emails/'
-      path: '/admin/emails'
-      fullPath: '/admin/emails'
-      preLoaderRoute: typeof AdminEmailsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -204,15 +223,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/emails/$emailId': {
-      id: '/admin/emails/$emailId'
+    '/_authenticated/admin/organization/': {
+      id: '/_authenticated/admin/organization/'
+      path: '/admin/organization'
+      fullPath: '/admin/organization'
+      preLoaderRoute: typeof AuthenticatedAdminOrganizationIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/admin/emails/': {
+      id: '/_authenticated/admin/emails/'
+      path: '/admin/emails'
+      fullPath: '/admin/emails'
+      preLoaderRoute: typeof AuthenticatedAdminEmailsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/admin/emails/$emailId': {
+      id: '/_authenticated/admin/emails/$emailId'
       path: '/admin/emails/$emailId'
       fullPath: '/admin/emails/$emailId'
-      preLoaderRoute: typeof AdminEmailsEmailIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedAdminEmailsEmailIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminEmailsEmailIdRoute: typeof AuthenticatedAdminEmailsEmailIdRoute
+  AuthenticatedAdminEmailsIndexRoute: typeof AuthenticatedAdminEmailsIndexRoute
+  AuthenticatedAdminOrganizationIndexRoute: typeof AuthenticatedAdminOrganizationIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminEmailsEmailIdRoute: AuthenticatedAdminEmailsEmailIdRoute,
+  AuthenticatedAdminEmailsIndexRoute: AuthenticatedAdminEmailsIndexRoute,
+  AuthenticatedAdminOrganizationIndexRoute:
+    AuthenticatedAdminOrganizationIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
 
 interface ResetPasswordRouteChildren {
   ResetPasswordMessageRoute: typeof ResetPasswordMessageRoute
@@ -227,14 +281,11 @@ const ResetPasswordRouteWithChildren = ResetPasswordRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRouteWithChildren,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
-  AdminIndexRoute: AdminIndexRoute,
-  AdminEmailsEmailIdRoute: AdminEmailsEmailIdRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  AdminEmailsIndexRoute: AdminEmailsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

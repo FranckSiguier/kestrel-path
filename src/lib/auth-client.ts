@@ -1,3 +1,4 @@
+import { adminClient, organizationClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 import { toast } from "sonner";
 
@@ -5,6 +6,7 @@ const baseURL = import.meta.env.BETTER_AUTH_URL;
 
 export const authClient = createAuthClient({
   baseURL,
+  plugins: [adminClient(), organizationClient()],
   fetchOptions: {
     onError: async (context) => {
       const { response } = context;

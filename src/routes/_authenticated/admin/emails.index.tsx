@@ -12,7 +12,7 @@ import InviteEmail from "@/lib/email/templates/inviteEmail";
 import ResetPasswordEmail from "@/lib/email/templates/resetPasswordEmail";
 import VerifyEmail from "@/lib/email/templates/verifyEmail";
 
-export const Route = createFileRoute("/admin/emails/")({
+export const Route = createFileRoute("/_authenticated/admin/emails/")({
   component: RouteComponent,
 });
 
@@ -32,7 +32,7 @@ const EMAIL_TEMPLATES = {
     element: (
       <InviteEmail
         url="https://example.com/invite?token=inv456"
-        organizationName="Acme Corp"
+        organizationName="Podium"
       />
     ),
   },

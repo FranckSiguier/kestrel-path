@@ -6,10 +6,20 @@ import { auth } from "@/lib/auth";
 export const authMiddleware = createMiddleware().server(async ({ next }) => {
   const headers = getRequestHeaders();
   const session = await auth.api.getSession({ headers });
-  console.log({ session });
 
   if (!session) {
     throw redirect({ to: "/sign-in" });
+  }
+
+  return await next();
+});
+
+export const adminMiddleware = createMiddleware().server(async ({ next }) => {
+  const headers = getRequestHeaders();
+  const session = await auth.api.getSession({ headers });
+
+  if (session?.user?.role !== "admin") {
+    throw redirect({ to: "/" });
   }
 
   return await next();
