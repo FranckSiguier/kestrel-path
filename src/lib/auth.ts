@@ -46,5 +46,13 @@ export const auth = betterAuth({
   //     await sendEmailVerification(user.email, url);
   //   },
   // },
-  plugins: [admin(), tanstackStartCookies(), organization()],
+  plugins: [
+    admin(),
+    tanstackStartCookies(),
+    organization({
+      allowUserToCreateOrganization: ({ user }) => {
+        return user.role === "admin";
+      },
+    }),
+  ],
 });
