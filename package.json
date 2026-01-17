@@ -4,12 +4,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev --port 3000",
-    "build": "vite build",
-    "preview": "vite preview",
     "test": "vitest run",
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check",
+    "deploy": "vite build && wrangler deploy",
+    "preview": "vite build && vite preview",
+    "cf-typegen": "wrangler types",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
@@ -19,6 +20,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
+    "@cloudflare/vite-plugin": "^1.21.0",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@libsql/client": "^0.17.0",
     "@react-email/components": "0.5.3",
@@ -59,7 +61,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
-    "@netlify/vite-plugin-tanstack-start": "^1.2.3",
     "@tanstack/devtools-vite": "^0.3.11",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
@@ -74,6 +75,7 @@
     "typescript": "^5.7.2",
     "vite": "^7.1.7",
     "vitest": "^3.0.5",
-    "web-vitals": "^5.1.0"
+    "web-vitals": "^5.1.0",
+    "wrangler": "^4.59.2"
   }
 }

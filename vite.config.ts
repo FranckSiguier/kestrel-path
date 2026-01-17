@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from "node:url";
-import netlify from "@netlify/vite-plugin-tanstack-start";
+import { cloudflare } from "@cloudflare/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -15,13 +15,17 @@ const config = defineConfig({
   },
   plugins: [
     devtools(),
+    cloudflare({ viteEnvironment: { name: "ssr" } }),
     tailwindcss(),
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
-    tanstackStart(),
+    tanstackStart({
+      prerender: {
+        enabled: true,
+      },
+    }),
     viteReact(),
-    netlify(),
   ],
 });
 

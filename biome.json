@@ -9,6 +9,7 @@
     "ignoreUnknown": false,
 
     "includes": [
+      "wrangler.jsonc",
       "**/src/**/*",
       "**/.vscode/**/*",
       "**/index.html",

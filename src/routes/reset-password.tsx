@@ -4,7 +4,7 @@ import ResetPassword from "@/components/ResetPassword";
 
 export const Route = createFileRoute("/reset-password")({
   validateSearch: z.object({
-    token: z.string(),
+    token: z.string().optional(),
   }),
   component: RouteComponent,
 });
