@@ -1,4 +1,4 @@
-import { S3Client } from "bun";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { env } from "@kestrel-path/env/server";
 import { put } from "@vercel/blob";
 
@@ -29,9 +29,11 @@ function getConfiguredS3Client() {
   s3Client = new S3Client({
     region: env.S3_REGION,
     endpoint: env.S3_ENDPOINT,
-    accessKeyId: env.S3_ACCESS_KEY_ID,
-    secretAccessKey: env.S3_SECRET_ACCESS_KEY,
-    bucket: env.S3_BUCKET,
+    credentials: {
+      accessKeyId: env.S3_ACCESS_KEY_ID,
+      secretAccessKey: env.S3_SECRET_ACCESS_KEY,
+    },
+    forcePathStyle: true,
   });
 
   return s3Client;
@@ -61,10 +63,15 @@ function getS3PublicUrl(pathname: string) {
 async function uploadToS3(pathname: string, file: File): Promise<StoredTranscriptObject> {
   const client = getConfiguredS3Client();
 
-  await client.write(pathname, file, {
-    type: file.type || "text/plain",
-    acl: "public-read",
-  });
+  await client.send(
+    new PutObjectCommand({
+      Bucket: env.S3_BUCKET,
+      Key: pathname,
+      Body: Buffer.from(await file.arrayBuffer()),
+      ContentType: file.type || "text/plain",
+      ACL: "public-read",
+    }),
+  );
 
   return {
     pathname,

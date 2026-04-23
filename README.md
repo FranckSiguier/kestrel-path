@@ -1,6 +1,5 @@
 # kestrel-path
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, Self, and more.
 
 ## Features
 
@@ -18,7 +17,7 @@ This project was created with [Better-T-Stack](https://github.com/AmanVarshney01
 First, install the dependencies:
 
 ```bash
-bun install
+pnpm install
 ```
 
 ## Database Setup
@@ -28,7 +27,7 @@ This project uses SQLite with Drizzle ORM.
 1. Start the local SQLite database (optional):
 
 ```bash
-bun run db:local
+pnpm db:local
 ```
 
 2. Update your `.env` file in the `apps/web` directory with the appropriate connection details if needed.
@@ -36,13 +35,13 @@ bun run db:local
 3. Apply the schema to your database:
 
 ```bash
-bun run db:push
+pnpm db:push
 ```
 
 Then, run the development server:
 
 ```bash
-bun run dev
+pnpm dev
 ```
 
 Open [http://localhost:3001](http://localhost:3001) in your browser to see the fullstack application.
@@ -56,7 +55,7 @@ For local development, you can run a MinIO S3-compatible object store instead of
 3. Start MinIO:
 
 ```bash
-bun run storage:up
+pnpm storage:up
 ```
 
 This starts:
@@ -68,7 +67,7 @@ The compose setup automatically creates a public `transcripts` bucket so transcr
 To stop the local object store:
 
 ```bash
-bun run storage:down
+pnpm storage:down
 ```
 
 ## UI Customization
@@ -111,12 +110,12 @@ kestrel-path/
 
 ## Available Scripts
 
-- `bun run dev`: Start all applications in development mode
-- `bun run build`: Build all applications
-- `bun run dev:web`: Start only the web application
-- `bun run check-types`: Check TypeScript types across all apps
-- `bun run db:push`: Push schema changes to database
-- `bun run db:generate`: Generate database client/types
-- `bun run db:migrate`: Run database migrations
-- `bun run db:studio`: Open database studio UI
-- `bun run db:local`: Start the local SQLite database
+- `pnpm dev`: Start all applications in development mode
+- `pnpm build`: Build all applications
+- `pnpm dev:web`: Start only the web application
+- `pnpm check-types`: Check TypeScript types across all apps
+- `pnpm db:push`: Push schema changes to database
+- `pnpm db:generate`: Generate database client/types
+- `pnpm db:migrate`: Run database migrations
+- `pnpm db:studio`: Open database studio UI
+- `pnpm db:local`: Start the local SQLite database

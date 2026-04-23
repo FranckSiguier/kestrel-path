@@ -12,6 +12,7 @@
     "@ai-sdk/gateway": "^3.0.104",
     "@ai-sdk/google": "^3.0.1",
     "@ai-sdk/react": "^3.0.3",
+    "@aws-sdk/client-s3": "^3.1035.0",
     "@kestrel-path/auth": "workspace:*",
     "@kestrel-path/db": "workspace:*",
     "@kestrel-path/env": "workspace:*",
@@ -42,5 +43,8 @@
     "@types/react-dom": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
