@@ -47,6 +47,30 @@ bun run dev
 
 Open [http://localhost:3001](http://localhost:3001) in your browser to see the fullstack application.
 
+## Local Transcript Storage
+
+For local development, you can run a MinIO S3-compatible object store instead of Vercel Blob.
+
+1. Copy `apps/web/.env.example` into your local `apps/web/.env` or merge the storage variables into your existing file.
+2. Set `STORAGE_PROVIDER=s3`.
+3. Start MinIO:
+
+```bash
+bun run storage:up
+```
+
+This starts:
+- MinIO API on [http://127.0.0.1:9000](http://127.0.0.1:9000)
+- MinIO Console on [http://127.0.0.1:9001](http://127.0.0.1:9001)
+
+The compose setup automatically creates a public `transcripts` bucket so transcript uploads from the AI workspace can be viewed locally via the saved object URL.
+
+To stop the local object store:
+
+```bash
+bun run storage:down
+```
+
 ## UI Customization
 
 React web apps in this stack share shadcn/ui primitives through `packages/ui`.

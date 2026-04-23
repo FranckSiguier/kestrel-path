@@ -2,10 +2,10 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@kestrel-path/db";
 import { transcripts } from "@kestrel-path/db/schema/ai";
-import { put } from "@vercel/blob";
 
 import { buildTranscriptPathname, requireSessionUser, routeErrorResponse, serializeTranscript } from "@/lib/ai/server";
 import { isSupportedTranscriptFile, MAX_TRANSCRIPT_BYTES } from "@/lib/ai/shared";
+import { uploadTranscriptObject } from "@/lib/ai/storage";
 
 export async function POST(request: Request) {
   try {
@@ -34,19 +34,15 @@ export async function POST(request: Request) {
     }
 
     const pathname = buildTranscriptPathname(user.id, file.name);
-    const blob = await put(pathname, file, {
-      access: "public",
-      addRandomSuffix: false,
-      contentType: file.type || "text/plain",
-    });
+    const storedObject = await uploadTranscriptObject(pathname, file);
 
     const transcriptId = crypto.randomUUID();
     await db.insert(transcripts).values({
       id: transcriptId,
       userId: user.id,
       fileName: file.name,
-      blobPathname: blob.pathname,
-      blobUrl: blob.url,
+      blobPathname: storedObject.pathname,
+      blobUrl: storedObject.url,
       contentType: file.type || "text/plain",
       sizeBytes: file.size,
       transcriptText,
