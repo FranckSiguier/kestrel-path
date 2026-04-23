@@ -1,0 +1,3 @@
+{
+  "extends": "@kestrel-path/config/tsconfig.base.json"
+}

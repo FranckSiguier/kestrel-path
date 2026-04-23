@@ -1,0 +1,24 @@
+{
+  "name": "@kestrel-path/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@kestrel-path/db": "workspace:*",
+    "@kestrel-path/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@kestrel-path/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
