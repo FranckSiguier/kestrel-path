@@ -98,24 +98,12 @@ export function toIsoString(value: Date | number) {
   return new Date(value).toISOString();
 }
 
-export function sanitizeFileName(fileName: string) {
-  return fileName.replace(/[^a-zA-Z0-9._-]/g, "-");
-}
-
-export function buildTranscriptPathname(userId: string, fileName: string) {
-  return `transcripts/${userId}/${crypto.randomUUID()}-${sanitizeFileName(fileName)}`;
-}
-
 export function serializeTranscript(
   row: typeof transcripts.$inferSelect,
 ): TranscriptRecord {
   return {
     id: row.id,
     fileName: row.fileName,
-    blobPathname: row.blobPathname,
-    blobUrl: row.blobUrl,
-    contentType: row.contentType,
-    sizeBytes: row.sizeBytes,
     transcriptText: row.transcriptText,
     createdAt: toIsoString(row.createdAt),
     updatedAt: toIsoString(row.updatedAt),

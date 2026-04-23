@@ -4,17 +4,6 @@ export const DECIMAL_SCALE = 1000;
 export const COST_SCALE = 1_000_000;
 export const MAX_TRANSCRIPT_BYTES = 5 * 1024 * 1024;
 
-export const SUPPORTED_TRANSCRIPT_EXTENSIONS = [
-  "txt",
-  "md",
-  "markdown",
-  "json",
-  "csv",
-  "srt",
-  "vtt",
-  "log",
-] as const;
-
 export type GatewayModelOption = {
   id: string;
   name: string;
@@ -42,10 +31,6 @@ export type AiCreditsResponse = {
 export type TranscriptRecord = {
   id: string;
   fileName: string;
-  blobPathname: string;
-  blobUrl: string;
-  contentType: string | null;
-  sizeBytes: number | null;
   transcriptText: string;
   createdAt: string;
   updatedAt: string;
@@ -126,15 +111,8 @@ export function derivePromptTitle(content: string) {
   return firstLine.slice(0, 80);
 }
 
-export function getFileExtension(fileName: string) {
-  const parts = fileName.toLowerCase().split(".");
-  return parts.length > 1 ? parts.at(-1) ?? "" : "";
-}
-
-export function isSupportedTranscriptFile(fileName: string) {
-  return SUPPORTED_TRANSCRIPT_EXTENSIONS.includes(
-    getFileExtension(fileName) as (typeof SUPPORTED_TRANSCRIPT_EXTENSIONS)[number],
-  );
+export function getUtf8ByteLength(value: string) {
+  return new TextEncoder().encode(value).length;
 }
 
 export function toScaledNumber(value: number | null | undefined, scale = DECIMAL_SCALE) {

@@ -8,8 +8,6 @@
     "build": "turbo build",
     "check-types": "turbo check-types",
     "dev:web": "turbo -F web dev",
-    "storage:up": "docker compose up -d minio minio-init",
-    "storage:down": "docker compose down",
     "db:push": "turbo -F @kestrel-path/db db:push",
     "db:studio": "turbo -F @kestrel-path/db db:studio",
     "db:generate": "turbo -F @kestrel-path/db db:generate",

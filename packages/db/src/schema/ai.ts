@@ -25,10 +25,6 @@ export const transcripts = sqliteTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     fileName: text("file_name").notNull(),
-    blobPathname: text("blob_pathname").notNull(),
-    blobUrl: text("blob_url").notNull(),
-    contentType: text("content_type"),
-    sizeBytes: integer("size_bytes"),
     transcriptText: text("transcript_text").notNull(),
     createdAt: integer("created_at", { mode: "timestamp_ms" })
       .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
@@ -38,10 +34,7 @@ export const transcripts = sqliteTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [
-    index("transcripts_userId_createdAt_idx").on(table.userId, table.createdAt),
-    uniqueIndex("transcripts_blobPathname_idx").on(table.blobPathname),
-  ],
+  (table) => [index("transcripts_userId_createdAt_idx").on(table.userId, table.createdAt)],
 );
 
 export const systemPromptVersions = sqliteTable(

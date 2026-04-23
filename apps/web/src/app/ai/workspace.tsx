@@ -12,12 +12,14 @@ import { Input } from "@kestrel-path/ui/components/input";
 import { Label } from "@kestrel-path/ui/components/label";
 import { Textarea } from "@kestrel-path/ui/components/textarea";
 import { cn } from "@kestrel-path/ui/lib/utils";
-import { FileText, KeyRound, LoaderCircle, RefreshCw, Sparkles, Star, Upload } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FileText, KeyRound, LoaderCircle, RefreshCw, Sparkles, Star } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Streamdown } from "streamdown";
 
 import {
+  getUtf8ByteLength,
+  MAX_TRANSCRIPT_BYTES,
   formatDateTime,
   formatPricingPerMillion,
   formatUsd,
@@ -53,7 +55,7 @@ const drawerTabs: Array<{
   {
     id: "transcripts",
     label: "Transcripts",
-    description: "Browse transcript files saved in Blob + DB.",
+    description: "Browse saved transcripts and their pasted text.",
     icon: FileText,
   },
 ];
@@ -117,7 +119,6 @@ function ScoreButtons({
 }
 
 export default function AIWorkspace() {
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeTab, setActiveTab] = useState<DrawerTab>("transcripts");
   const [gatewayKeyInput, setGatewayKeyInput] = useState("");
   const [settings, setSettings] = useState<AiGatewaySettingsResponse | null>(null);
@@ -131,6 +132,8 @@ export default function AIWorkspace() {
   const [selectedPromptId, setSelectedPromptId] = useState<string | null>(null);
   const [selectedRankingPromptId, setSelectedRankingPromptId] = useState<string | null>(null);
   const [selectedHistoryId, setSelectedHistoryId] = useState<string | null>(null);
+  const [transcriptTitleInput, setTranscriptTitleInput] = useState("");
+  const [transcriptTextInput, setTranscriptTextInput] = useState("");
   const [promptTitle, setPromptTitle] = useState("");
   const [systemPrompt, setSystemPrompt] = useState("");
   const [selectedModelId, setSelectedModelId] = useState("");
@@ -138,10 +141,9 @@ export default function AIWorkspace() {
   const [topPInput, setTopPInput] = useState("1");
   const [maxOutputTokensInput, setMaxOutputTokensInput] = useState("");
   const [transcriptSearch, setTranscriptSearch] = useState("");
-  const [dragActive, setDragActive] = useState(false);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
   const [isSavingKey, setIsSavingKey] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isSavingTranscript, setIsSavingTranscript] = useState(false);
   const [isRefreshingRankings, setIsRefreshingRankings] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [currentAnalysisId, setCurrentAnalysisId] = useState<string | null>(null);
@@ -395,15 +397,33 @@ export default function AIWorkspace() {
     }
   };
 
-  const handleTranscriptUpload = async (file: File) => {
-    setIsUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
+  const handleSaveTranscript = async () => {
+    const title = transcriptTitleInput.trim();
+    const transcriptText = transcriptTextInput.trim();
 
-      const response = await fetch("/api/ai/transcripts/upload", {
+    if (!title) {
+      toast.error("Enter a transcript title first.");
+      return;
+    }
+
+    if (!transcriptText) {
+      toast.error("Paste a transcript first.");
+      return;
+    }
+
+    if (getUtf8ByteLength(transcriptText) > MAX_TRANSCRIPT_BYTES) {
+      toast.error("Transcript is too large.");
+      return;
+    }
+
+    setIsSavingTranscript(true);
+    try {
+      const response = await fetch("/api/ai/transcripts", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, transcriptText }),
       });
 
       const payload = (await response.json()) as {
@@ -412,25 +432,27 @@ export default function AIWorkspace() {
       };
 
       if (!response.ok || !payload.transcript) {
-        throw new Error(payload.error ?? "Failed to upload transcript.");
+        throw new Error(payload.error ?? "Failed to save transcript.");
       }
 
-      const uploadedTranscript = payload.transcript;
-      setTranscripts((current) => [uploadedTranscript, ...current]);
-      setSelectedTranscriptId(uploadedTranscript.id);
+      const savedTranscript = payload.transcript;
+      setTranscripts((current) => [savedTranscript, ...current]);
+      setSelectedTranscriptId(savedTranscript.id);
+      setTranscriptTitleInput("");
+      setTranscriptTextInput("");
       setActiveTab("transcripts");
-      toast.success("Transcript saved to Blob and database.");
+      toast.success("Transcript saved.");
     } catch (error) {
       console.error(error);
-      toast.error(error instanceof Error ? error.message : "Failed to upload transcript.");
+      toast.error(error instanceof Error ? error.message : "Failed to save transcript.");
     } finally {
-      setIsUploading(false);
+      setIsSavingTranscript(false);
     }
   };
 
   const handleAnalyze = async () => {
     if (!selectedTranscript) {
-      toast.error("Upload or select a transcript first.");
+      toast.error("Save or select a transcript first.");
       return;
     }
 
@@ -556,7 +578,7 @@ export default function AIWorkspace() {
         <div className="border-b p-4">
           <div className="text-sm font-medium">AI Transcript Analyzer</div>
           <div className="text-xs text-muted-foreground">
-            Upload transcripts, version prompts, stream analyses, and score outcomes.
+            Save transcripts, version prompts, stream analyses, and score outcomes.
           </div>
         </div>
 
@@ -655,7 +677,7 @@ export default function AIWorkspace() {
               <Card size="sm">
                 <CardHeader>
                   <CardTitle>Saved Transcripts</CardTitle>
-                  <CardDescription>Search transcripts stored in Vercel Blob and mirrored to the database.</CardDescription>
+                  <CardDescription>Search transcripts saved directly in the database.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-3">
                   <Input
@@ -807,67 +829,39 @@ export default function AIWorkspace() {
             <CardHeader>
               <CardTitle>Analysis Controls</CardTitle>
               <CardDescription>
-                Upload a transcript, choose a model, and run a streaming analysis with versioned prompts.
+                Save a transcript, choose a model, and run a streaming analysis with versioned prompts.
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
-              <div
-                className={cn(
-                  "grid gap-2 border border-dashed p-4 text-center transition-colors",
-                  dragActive ? "border-primary bg-primary/5" : "border-border",
-                )}
-                onDragEnter={(event) => {
-                  event.preventDefault();
-                  setDragActive(true);
-                }}
-                onDragOver={(event) => {
-                  event.preventDefault();
-                  setDragActive(true);
-                }}
-                onDragLeave={(event) => {
-                  event.preventDefault();
-                  setDragActive(false);
-                }}
-                onDrop={(event) => {
-                  event.preventDefault();
-                  setDragActive(false);
-                  const file = event.dataTransfer.files[0];
-                  if (file) {
-                    void handleTranscriptUpload(file);
-                  }
-                }}
-              >
-                <div className="mx-auto flex size-10 items-center justify-center rounded-full border">
-                  <Upload className="size-4" />
+              <div className="grid gap-3 border p-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="transcript-title">Transcript title</Label>
+                  <Input
+                    id="transcript-title"
+                    value={transcriptTitleInput}
+                    onChange={(event) => setTranscriptTitleInput(event.target.value)}
+                    placeholder="Customer discovery call"
+                  />
                 </div>
-                <div className="text-sm font-medium">Drop a transcript here</div>
-                <div className="text-xs text-muted-foreground">
-                  The file will be stored in Vercel Blob and the extracted text will be saved in the database.
+                <div className="grid gap-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <Label htmlFor="transcript-text">Transcript text</Label>
+                    <div className="text-xs text-muted-foreground">Max 5 MB of pasted text.</div>
+                  </div>
+                  <Textarea
+                    id="transcript-text"
+                    value={transcriptTextInput}
+                    onChange={(event) => setTranscriptTextInput(event.target.value)}
+                    placeholder="Paste the transcript here..."
+                    className="min-h-48"
+                  />
                 </div>
-                <div className="flex justify-center">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    disabled={isUploading}
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    {isUploading ? <LoaderCircle className="size-4 animate-spin" /> : <Upload className="size-4" />}
-                    {isUploading ? "Uploading..." : "Choose transcript"}
+                <div className="flex justify-end">
+                  <Button type="button" disabled={isSavingTranscript} onClick={() => void handleSaveTranscript()}>
+                    {isSavingTranscript ? <LoaderCircle className="size-4 animate-spin" /> : null}
+                    {isSavingTranscript ? "Saving..." : "Save transcript"}
                   </Button>
                 </div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  className="hidden"
-                  accept=".txt,.md,.markdown,.json,.csv,.srt,.vtt,.log"
-                  onChange={(event) => {
-                    const file = event.target.files?.[0];
-                    if (file) {
-                      void handleTranscriptUpload(file);
-                      event.currentTarget.value = "";
-                    }
-                  }}
-                />
               </div>
 
               <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
@@ -1040,14 +1034,6 @@ export default function AIWorkspace() {
                   <div className="grid gap-1 border p-3 text-xs text-muted-foreground">
                     <div className="font-medium text-foreground">{selectedTranscript.fileName}</div>
                     <div>Saved {formatDateTime(selectedTranscript.createdAt)}</div>
-                    <a
-                      href={selectedTranscript.blobUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-primary underline-offset-4 hover:underline"
-                    >
-                      Open blob file
-                    </a>
                   </div>
                 ) : null}
 
@@ -1060,7 +1046,7 @@ export default function AIWorkspace() {
                     </div>
                   ) : (
                     <div className="text-sm text-muted-foreground">
-                      No analysis yet. Upload a transcript and run one from the controls above.
+                      No analysis yet. Save a transcript and run one from the controls above.
                     </div>
                   )}
                 </div>
