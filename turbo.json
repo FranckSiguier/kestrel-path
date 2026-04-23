@@ -5,6 +5,15 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": [
+        "BETTER_AUTH_SECRET",
+        "BETTER_AUTH_URL",
+        "BLOB_READ_WRITE_TOKEN",
+        "CORS_ORIGIN",
+        "DATABASE_AUTH_TOKEN",
+        "DATABASE_URL",
+        "STORAGE_PROVIDER"
+      ],
       "outputs": ["dist/**", ".next/**"]
     },
     "lint": {
