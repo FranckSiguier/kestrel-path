@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 
+import AiCreditsIndicator from "./ai-credits-indicator";
 import { ModeToggle } from "./mode-toggle";
 import UserMenu from "./user-menu";
 
@@ -23,7 +24,8 @@ export default function Header() {
             );
           })}
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <AiCreditsIndicator />
           <ModeToggle />
           <UserMenu />
         </div>
